@@ -10,11 +10,14 @@
           :cornersSquareOptions="{ type: 'square' }"
         />
       </li>
-      <li class="list-group-item">{{ silceAddress(wallet.address) }}</li>
       <li class="list-group-item">
-        {{ wallet.balance.toLocaleString("en-US") }} TRX | ≈{{
-          fiatBalance.toLocaleString("en-US")
-        }}
+        {{ silceAddress(wallet.address) }}
+        <button type="button" class="btn btn-sm mx-1">❏</button>
+        <button type="button" class="btn btn-sm mx-1">↗</button>
+      </li>
+      <li class="list-group-item">{{ wallet.balance }} TRX</li>
+      <li class="list-group-item">
+        ≈{{ fiatBalance.toLocaleString("en-US") }}
         <select
           v-model="fiatSelected"
           @change="changeFiatSelected"
