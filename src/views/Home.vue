@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       price: {},
-      selected: localStorage.getItem("selected") || 0,
+      selected: Number(localStorage.getItem("selected")) || 0,
       wallets: JSON.parse(localStorage.getItem("wallets")),
       wallet: {
         privateKey: "",
