@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import tronWeb from "../configs/tronweb.config";
+
 export default {
   name: "WalletImport",
 
@@ -29,8 +31,10 @@ export default {
     savePrivateKey() {
       if (!this.privateKey)
         return this.$notify({ title: "Enter private key", type: "error" });
+      const address = tronWeb.address.fromPrivateKey(this.privateKey);
       this.wallet.push({
         privateKey: this.privateKey,
+        address,
       });
       localStorage.setItem("wallets", JSON.stringify(this.wallet));
       localStorage.setItem("selected", 0);

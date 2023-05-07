@@ -57,7 +57,7 @@ export default {
     return {
       price: {},
       selected: localStorage.getItem("selected") || 0,
-      wallets: JSON.parse(localStorage.getItem("wallets")) || {},
+      wallets: JSON.parse(localStorage.getItem("wallets")),
       wallet: {
         privateKey: "",
         address: "",
@@ -87,7 +87,12 @@ export default {
 
   mounted() {
     this.getPrice();
-    if (!this.wallets[0]) alert("Not have wallet, please import first");
+    console.log(this.wallets);
+    if (!this.wallets)
+      return this.$notify({
+        title: "Not have wallet, please import first",
+        type: "error",
+      });
     this.wallet.privateKey = this.wallets[this.selected].privateKey;
     this.wallet.address = tronWeb.address.fromPrivateKey(
       this.wallets[this.selected].privateKey

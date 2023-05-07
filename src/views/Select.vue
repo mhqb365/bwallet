@@ -7,7 +7,9 @@ export default {
   name: "WalletSelect",
 
   data() {
-    return {};
+    return {
+      wallets: JSON.parse(localStorage.getItem("wallets")),
+    };
   },
 
   mounted() {},
