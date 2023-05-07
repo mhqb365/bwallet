@@ -10,11 +10,13 @@
     "push": "git add . && git commit -m :rocket: && git push"
   },
   "dependencies": {
+    "@kyvg/vue3-notification": "^2.9.0",
     "axios": "^1.4.0",
     "qrcode-vue3": "^1.4.17",
     "tronweb": "4.0.1",
     "vue": "^3.2.47",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "vue3-clipboard": "^1.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",

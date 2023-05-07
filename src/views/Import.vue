@@ -27,14 +27,15 @@ export default {
 
   methods: {
     savePrivateKey() {
-      if (!this.privateKey) return alert("Enter private key");
+      if (!this.privateKey)
+        return this.$notify({ title: "Enter private key", type: "error" });
       this.wallet.push({
         privateKey: this.privateKey,
       });
       localStorage.setItem("wallets", JSON.stringify(this.wallet));
       localStorage.setItem("selected", 0);
       this.privateKey = "";
-      alert("Success");
+      this.$notify("Success");
     },
   },
 };

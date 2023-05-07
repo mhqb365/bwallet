@@ -12,8 +12,17 @@
       </li>
       <li class="list-group-item">
         {{ silceAddress(wallet.address) }}
-        <button type="button" class="btn btn-sm mx-1">❏</button>
-        <button type="button" class="btn btn-sm mx-1">↗</button>
+        <button
+          type="button"
+          v-clipboard:copy="wallet.address"
+          v-clipboard:success="copySuccess"
+          class="btn btn-sm mx-1"
+        >
+          ❏
+        </button>
+        <a :href="explorer + '/#/address/' + wallet.address" target="_blank">
+          <button type="button" class="btn btn-sm mx-1">↗</button>
+        </a>
       </li>
       <li class="list-group-item">{{ wallet.balance }} TRX</li>
       <li class="list-group-item">
@@ -36,6 +45,7 @@
 import tronWeb from "../configs/tronweb.config";
 import axios from "axios";
 import QRCodeVue3 from "qrcode-vue3";
+import EXPLORER from "../configs/explorer.config";
 
 export default {
   name: "WalletHome",
@@ -55,6 +65,7 @@ export default {
         bandwidth: 0,
       },
       fiatSelected: localStorage.getItem("fiatSelected") || "USD",
+      explorer: EXPLORER,
     };
   },
 
@@ -102,6 +113,9 @@ export default {
     },
     changeFiatSelected(e) {
       localStorage.setItem("fiatSelected", e.target.value);
+    },
+    copySuccess() {
+      this.$notify("Copy success");
     },
   },
 };

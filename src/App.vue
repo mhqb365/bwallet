@@ -1,5 +1,6 @@
 <template>
   <div class="container py-4">
+    <notifications position="center" />
     <Navbar class="mb-3" />
     <router-view />
   </div>
