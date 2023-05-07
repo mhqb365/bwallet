@@ -1,15 +1,16 @@
 <template>
   <div>
+    <div class="text-center mb-3">
+      <QRCodeVue3
+        :value="this.wallet.address"
+        :width="200"
+        :height="200"
+        :dotsOptions="{ type: 'square' }"
+        :cornersSquareOptions="{ type: 'square' }"
+      />
+    </div>
+
     <ul class="list-group text-center">
-      <li class="list-group-item">
-        <QRCodeVue3
-          :value="this.wallet.address"
-          :width="200"
-          :height="200"
-          :dotsOptions="{ type: 'square' }"
-          :cornersSquareOptions="{ type: 'square' }"
-        />
-      </li>
       <li class="list-group-item">
         {{ silceAddress(wallet.address) }}
         <button
@@ -25,7 +26,7 @@
         </a>
       </li>
       <li class="list-group-item">{{ wallet.balance }} TRX</li>
-      <li class="list-group-item">
+      <li class="list-group-item small">
         ≈{{ fiatBalance.toLocaleString("en-US") }}
         <select
           v-model="fiatSelected"
@@ -36,7 +37,7 @@
           <option>VND</option>
         </select>
       </li>
-      <li class="list-group-item">{{ wallet.bandwidth }} ⛽</li>
+      <li class="list-group-item small">{{ wallet.bandwidth }} ⛽</li>
     </ul>
   </div>
 </template>
@@ -87,16 +88,13 @@ export default {
 
   mounted() {
     this.getPrice();
-    console.log(this.wallets);
+    // console.log(this.wallets);
     if (!this.wallets)
       return this.$notify({
         title: "Not have wallet, please import first",
         type: "error",
       });
-    this.wallet.privateKey = this.wallets[this.selected].privateKey;
-    this.wallet.address = tronWeb.address.fromPrivateKey(
-      this.wallets[this.selected].privateKey
-    );
+    this.wallet = this.wallets[this.selected];
     this.getBalance(this.wallet.address);
   },
 

@@ -1,7 +1,7 @@
 <template>
-  <div class="container py-4">
+  <div class="container-fluid py-2">
     <notifications position="center" />
-    <Navbar class="mb-3" />
+    <Navbar />
     <router-view />
   </div>
 </template>
@@ -15,4 +15,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style>
+#app {
+  font-family: Courier New, monospace;
+}
+</style>

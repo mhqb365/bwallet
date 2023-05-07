@@ -14,6 +14,7 @@
         <router-link to="/import" class="nav-link">Import</router-link>
       </li>
     </ul>
+    <hr />
   </div>
 </template>
 
