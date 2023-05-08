@@ -19,10 +19,12 @@
           v-clipboard:success="copySuccess"
           class="btn btn-sm mx-1"
         >
-          ❏
+          <i class="fa fa-files-o" aria-hidden="true"></i>
         </button>
         <a :href="explorer + '/#/address/' + wallet.address" target="_blank">
-          <button type="button" class="btn btn-sm mx-1">↗</button>
+          <button type="button" class="btn btn-sm mx-1">
+            <i class="fa fa-link" aria-hidden="true"></i>
+          </button>
         </a>
       </li>
       <li class="list-group-item">{{ wallet.balance }} TRX</li>

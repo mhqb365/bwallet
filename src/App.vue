@@ -1,8 +1,8 @@
 <template>
-  <div class="container-fluid py-2">
-    <notifications position="center" />
+  <div class="container">
+    <notifications position="right" />
     <Navbar />
-    <router-view />
+    <router-view class="py-2 pt-3" />
   </div>
 </template>
 

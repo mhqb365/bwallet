@@ -1,29 +1,60 @@
 <template>
   <div>
-    
+    <div class="form-group">
+      <label>To</label>
+      <input v-model="to" type="text" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Amount</label>
+      <input v-model="amount" type="number" class="form-control" />
+    </div>
+    <button type="button" class="btn btn-primary" @click="send">
+      Send
+    </button>
   </div>
 </template>
 
 <script>
+import tronWeb from "../configs/tronweb.config";
+
 export default {
-  name: 'WalletSend',
+  name: "WalletSend",
 
   data() {
     return {
-      
+      selected: Number(localStorage.getItem("selected")) || 0,
+      wallets: JSON.parse(localStorage.getItem("wallets")),
+      to: "",
+      amount: 0,
     };
   },
 
-  mounted() {
-    
-  },
+  mounted() {},
 
   methods: {
-    
+    async send() {
+      if (!this.to)
+        return this.$notify({
+          title: "Enter receiving address",
+          type: "error",
+        });
+      if (!this.amount || this.amount <= 0)
+        return this.$notify({ title: "Enter amount to send", type: "error" });
+      const balance = await tronWeb.trx.getBalance(
+        this.wallets[this.selected].address
+      );
+      if (this.amount >= balance)
+        return this.$notify({ title: "Insufficient balance", type: "error" });
+
+      await tronWeb.setPrivateKey(this.wallets[this.selected].privateKey);
+      await tronWeb.trx.sendTransaction(
+        this.to,
+        tronWeb.toSun(Number(this.amount).toFixed(6))
+      );
+      this.$notify("Success");
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

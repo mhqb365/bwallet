@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(wallet, index) in wallets">
+    <div v-for="(wallet, index) in wallets" class="mb-3">
       <div class="form-check-inline">
         <label class="form-check-label">
           <input
@@ -15,6 +15,10 @@
         </label>
       </div>
     </div>
+
+    <button type="button" class="btn btn-danger" @click="resetWallet">
+      Reset
+    </button>
   </div>
 </template>
 
@@ -41,6 +45,10 @@ export default {
     changeSelected(e) {
       // console.log(e.target.id);
       localStorage.setItem("selected", e.target.id);
+    },
+    resetWallet() {
+      localStorage.clear();
+      window.location.href = "/";
     },
   },
 };
