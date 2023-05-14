@@ -5,7 +5,7 @@
       <input v-model="privateKey" type="text" class="form-control" />
     </div>
     <button type="button" class="btn btn-primary" @click="savePrivateKey">
-      <i class="fa fa-plus-square-o" aria-hidden="true"></i> Save
+      <i class="fas fa-save"></i> Save
     </button>
   </div>
 </template>
