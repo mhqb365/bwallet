@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       privateKey: "",
-      wallet: JSON.parse(localStorage.getItem("wallets")) || [],
+      wallets: this.$store.state.wallets,
     };
   },
 
@@ -32,11 +32,11 @@ export default {
       if (!this.privateKey)
         return this.$notify({ title: "Enter private key", type: "error" });
       const address = tronWeb.address.fromPrivateKey(this.privateKey);
-      this.wallet.push({
+      this.wallets.push({
         privateKey: this.privateKey,
         address,
       });
-      localStorage.setItem("wallets", JSON.stringify(this.wallet));
+      localStorage.setItem("wallets", JSON.stringify(this.wallets));
       localStorage.setItem("selected", 0);
       this.privateKey = "";
       this.$notify("Success");

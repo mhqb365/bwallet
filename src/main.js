@@ -8,14 +8,14 @@ import { createStore } from "vuex";
 const store = createStore({
   state() {
     return {
-      price: {
-        change24h: 0,
-        fiatRate: [],
-        usd: 0,
-      },
+      wallets: JSON.parse(localStorage.getItem("wallets")) || [],
+      price: {},
     };
   },
   mutations: {
+    updateWallets(state) {
+      state.wallets = JSON.parse(localStorage.getItem("wallets"));
+    },
     updatePrice(state, price) {
       state.price = price;
     },

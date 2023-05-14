@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="text-center mb-3">
+    <div class="text-center mb-4">
       <QRCodeVue3
-        :value="this.wallet.address"
+        :value="wallets[selected].address"
         :width="200"
         :height="200"
         :dotsOptions="{ type: 'square' }"
@@ -12,22 +12,33 @@
 
     <ul class="list-group text-center">
       <li class="list-group-item">
-        {{ silceAddress(wallet.address) }}
+        {{ silceAddress(wallets[selected].address) }}
         <button
           type="button"
-          v-clipboard:copy="wallet.address"
+          v-clipboard:copy="wallets[selected].address"
           v-clipboard:success="copySuccess"
           class="btn btn-sm mx-1"
         >
           <i class="fas fa-copy"></i>
         </button>
-        <a :href="explorer + '/#/address/' + wallet.address" target="_blank">
+        <a
+          :href="explorer + '/#/address/' + wallets[selected].address"
+          target="_blank"
+        >
           <button type="button" class="btn btn-sm mx-1">
             <i class="fas fa-external-link-square-alt"></i>
           </button>
         </a>
       </li>
-      <li class="list-group-item">{{ wallet.balance }} TRX</li>
+      <li class="list-group-item">
+        {{ balance.toLocaleString("en-US") }} TRX
+        <button v-if="loading" type="button" class="btn btn-sm mx-1">
+          <i class="fas fa-sync fa-spin"></i>
+        </button>
+        <button v-else type="button" class="btn btn-sm mx-1" @click="update">
+          <i class="fas fa-sync"></i>
+        </button>
+      </li>
       <li class="list-group-item small">
         ≈{{ fiatBalance.toLocaleString("en-US") }}
         <select
@@ -40,7 +51,7 @@
         </select>
       </li>
       <li class="list-group-item small">
-        {{ wallet.bandwidth }}
+        {{ bandwidth }}
         <i class="fas fa-fire-alt"></i>
       </li>
     </ul>
@@ -49,7 +60,6 @@
 
 <script>
 import tronWeb from "../configs/tronweb.config";
-import axios from "axios";
 import QRCodeVue3 from "qrcode-vue3";
 import EXPLORER from "../configs/explorer.config";
 
@@ -61,69 +71,64 @@ export default {
 
   data() {
     return {
-      price: {},
-      selected: Number(localStorage.getItem("selected")) || 0,
+      loading: false,
       wallets: JSON.parse(localStorage.getItem("wallets")),
-      wallet: {
-        privateKey: "",
-        address: "",
-        balance: 0,
-        bandwidth: 0,
-      },
+      selected: Number(localStorage.getItem("selected")) || 0,
+      balance: 0,
+      bandwidth: 0,
       fiatSelected: localStorage.getItem("fiatSelected") || "USD",
       explorer: EXPLORER,
     };
   },
 
   computed: {
+    price() {
+      return this.$store.state.price;
+    },
     fiatBalance() {
       let fiatBal = 0;
-      if (this.fiatSelected === "USD")
-        fiatBal = this.wallet.balance * this.price.usd;
+      if (this.fiatSelected === "USD") fiatBal = this.balance * this.price.usd;
       for (const item in this.price.fiatRate) {
         if (this.fiatSelected === this.price.fiatRate[item].symbol)
           fiatBal =
-            this.wallet.balance *
-            this.price.usd *
-            this.price.fiatRate[item].rate;
+            this.balance * this.price.usd * this.price.fiatRate[item].rate;
       }
       return fiatBal;
     },
   },
 
   mounted() {
-    this.getPrice();
-    // console.log(this.wallets);
     if (!this.wallets)
       return this.$notify({
         title: "Not have wallet, please import first",
         type: "error",
       });
-    this.wallet = this.wallets[this.selected];
-    this.getBalance(this.wallet.address);
+    this.getBalance(this.wallets[this.selected].address);
   },
 
   methods: {
+    async getBalance(address) {
+      try {
+        this.loading = true;
+        this.balance = await tronWeb.trx.getBalance(address);
+        this.balance = Number(tronWeb.fromSun(this.balance));
+        this.bandwidth = await tronWeb.trx.getBandwidth(address);
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+      }
+    },
     silceAddress(address) {
       return address.slice(0, 5) + "..." + address.slice(-4);
-    },
-    async getPrice() {
-      const { data } = await axios.get(
-        "https://api-dashboard.mhqb365.com/price"
-      );
-      // console.log(data);
-      this.price = data;
-    },
-    async getBalance(address) {
-      this.wallet.balance = await tronWeb.trx.getBalance(address);
-      this.wallet.balance = Number(tronWeb.fromSun(this.wallet.balance));
-      this.wallet.bandwidth = await tronWeb.trx.getBandwidth(address);
     },
     changeFiatSelected(e) {
       localStorage.setItem("fiatSelected", e.target.value);
     },
     copySuccess() {
       this.$notify("Copy success");
+    },
+    update() {
+      this.getBalance(this.wallets[this.selected].address);
     },
   },
 };

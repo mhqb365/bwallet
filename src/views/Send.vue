@@ -22,8 +22,8 @@ export default {
 
   data() {
     return {
+      wallets: this.$store.state.wallets,
       selected: Number(localStorage.getItem("selected")) || 0,
-      wallets: JSON.parse(localStorage.getItem("wallets")),
       to: "",
       amount: 0,
     };
