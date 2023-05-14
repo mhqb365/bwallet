@@ -1,27 +1,19 @@
 <template>
-  <div class="fixed-bottom py-3">
-    <ul class="nav justify-content-center">
-      <li class="nav-item">
-        <router-link to="/" class="nav-link">
-          Wallet
-        </router-link>
-      </li>
-      <li class="nav-item">
-        <router-link to="/send" class="nav-link">
-          Send
-        </router-link>
-      </li>
-      <li class="nav-item">
-        <router-link to="/select" class="nav-link">
-          Select
-        </router-link>
-      </li>
-      <li class="nav-item">
-        <router-link to="/import" class="nav-link">
-          Import
-        </router-link>
-      </li>
-    </ul>
+  <div class="fixed-bottom nav justify-content-center py-3">
+    <div class="btn-group shadow">
+      <button type="button" class="btn btn-primary" @click="goto('/')">
+        <i class="fas fa-wallet"></i> Wallet
+      </button>
+      <button type="button" class="btn btn-warning" @click="goto('/send')">
+        <i class="fas fa-paper-plane"></i> Send
+      </button>
+      <button type="button" class="btn btn-success" @click="goto('/select')">
+        <i class="fa fa-cog" aria-hidden="true"></i> Select
+      </button>
+      <button type="button" class="btn btn-info" @click="goto('/import')">
+        <i class="fas fa-file-upload"></i> Import
+      </button>
+    </div>
   </div>
 </template>
 
@@ -35,7 +27,12 @@ export default {
 
   mounted() {},
 
-  methods: {},
+  methods: {
+    goto(path) {
+      // if (!path) this.$router.push({ path: "/" });
+      this.$router.push({ path });
+    },
+  },
 };
 </script>
 

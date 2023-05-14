@@ -19,11 +19,11 @@
           v-clipboard:success="copySuccess"
           class="btn btn-sm mx-1"
         >
-          <i class="fa fa-files-o" aria-hidden="true"></i>
+          <i class="fas fa-copy"></i>
         </button>
         <a :href="explorer + '/#/address/' + wallet.address" target="_blank">
           <button type="button" class="btn btn-sm mx-1">
-            <i class="fa fa-link" aria-hidden="true"></i>
+            <i class="fas fa-external-link-square-alt"></i>
           </button>
         </a>
       </li>
@@ -33,13 +33,16 @@
         <select
           v-model="fiatSelected"
           @change="changeFiatSelected"
-          style="border: none"
+          class="select-fiat"
         >
           <option>USD</option>
           <option>VND</option>
         </select>
       </li>
-      <li class="list-group-item small">{{ wallet.bandwidth }} ⛽</li>
+      <li class="list-group-item small">
+        {{ wallet.bandwidth }}
+        <i class="fas fa-fire-alt"></i>
+      </li>
     </ul>
   </div>
 </template>
@@ -126,4 +129,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.select-fiat {
+  background-color: white;
+  border: none;
+}
+</style>

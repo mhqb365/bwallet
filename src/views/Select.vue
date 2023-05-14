@@ -17,7 +17,7 @@
     </div>
 
     <button type="button" class="btn btn-danger" @click="resetWallet">
-      Reset
+      <i class="fas fa-trash"></i> Reset
     </button>
   </div>
 </template>

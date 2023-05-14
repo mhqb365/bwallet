@@ -9,7 +9,7 @@
       <input v-model="amount" type="number" class="form-control" />
     </div>
     <button type="button" class="btn btn-primary" @click="send">
-      Send
+      <i class="fas fa-paper-plane"></i> Send
     </button>
   </div>
 </template>
