@@ -1,1 +1,1 @@
-# Simple Vue 3 + Vite + VueRouter
+# Simple TRON wallet
