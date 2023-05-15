@@ -108,15 +108,9 @@ export default {
 
   methods: {
     async getBalance(address) {
-      try {
-        this.loading = true;
-        this.balance = await tronWeb.trx.getBalance(address);
-        this.balance = Number(tronWeb.fromSun(this.balance));
-        this.bandwidth = await tronWeb.trx.getBandwidth(address);
-        this.loading = false;
-      } catch (error) {
-        this.loading = false;
-      }
+      this.balance = await tronWeb.trx.getBalance(address);
+      this.balance = Number(tronWeb.fromSun(this.balance));
+      this.bandwidth = await tronWeb.trx.getBandwidth(address);
     },
     silceAddress(address) {
       return address.slice(0, 5) + "..." + address.slice(-4);
@@ -127,9 +121,11 @@ export default {
     copySuccess() {
       this.$notify("Copy success");
     },
-    update() {
-      this.$store.dispatch("getPrice");
-      this.getBalance(this.wallets[this.selected].address);
+    async update() {
+      this.loading = true;
+      await this.$store.dispatch("getPrice");
+      await this.getBalance(this.wallets[this.selected].address);
+      this.loading = false;
     },
   },
 };
