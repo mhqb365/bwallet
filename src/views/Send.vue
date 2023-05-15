@@ -1,5 +1,6 @@
 <template>
   <div>
+    <qr-capture @decode="onDecode" class="mb-3"></qr-capture>
     <div class="form-group">
       <label>To</label>
       <input v-model="to" type="text" class="form-control" />
@@ -16,9 +17,14 @@
 
 <script>
 import tronWeb from "../configs/tronweb.config";
+import { QrCapture } from "vue3-qr-reader";
 
 export default {
   name: "WalletSend",
+
+  components: {
+    QrCapture,
+  },
 
   data() {
     return {
@@ -50,6 +56,10 @@ export default {
         tronWeb.toSun(Number(this.amount).toFixed(6))
       );
       this.$notify("Success");
+    },
+    onDecode(decodedString) {
+      // console.log(decodedString);
+      this.to = decodedString;
     },
   },
 };
