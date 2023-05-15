@@ -29,8 +29,6 @@ export default {
     };
   },
 
-  mounted() {},
-
   methods: {
     async send() {
       if (!this.to)
@@ -56,5 +54,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped></style>

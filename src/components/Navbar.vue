@@ -11,7 +11,7 @@
         <i class="fa fa-cog" aria-hidden="true"></i> Select
       </button>
       <button type="button" class="btn btn-info" @click="goto('/import')">
-        <i class="fas fa-file-upload"></i> Import
+        <i class="fas fa-plus"></i> Import
       </button>
     </div>
   </div>
@@ -21,19 +21,10 @@
 export default {
   name: "WalletNavbar",
 
-  data() {
-    return {};
-  },
-
-  mounted() {},
-
   methods: {
     goto(path) {
-      // if (!path) this.$router.push({ path: "/" });
       this.$router.push({ path });
     },
   },
 };
 </script>
-
-<style lang="scss" scoped></style>

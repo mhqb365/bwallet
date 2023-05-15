@@ -10,7 +10,6 @@
 <script>
 import NavBar from "./components/NavBar.vue";
 import PriceBar from "./components/PriceBar.vue";
-import axios from "axios";
 
 export default {
   name: "WalletApp",
@@ -18,18 +17,7 @@ export default {
   components: { NavBar, PriceBar },
 
   mounted() {
-    this.getPrice();
-  },
-
-  methods: {
-    async getPrice() {
-      const { data } = await axios.get(
-        "https://api-dashboard.mhqb365.com/price"
-      );
-      // console.log(data);
-      this.price = data;
-      this.$store.commit("updatePrice", data);
-    },
+    this.$store.dispatch("getPrice");
   },
 };
 </script>

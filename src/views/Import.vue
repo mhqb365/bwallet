@@ -23,10 +23,6 @@ export default {
     };
   },
 
-  mounted() {
-    // console.log(this.wallet);
-  },
-
   methods: {
     savePrivateKey() {
       if (!this.privateKey)
@@ -44,5 +40,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped></style>

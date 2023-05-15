@@ -128,6 +128,7 @@ export default {
       this.$notify("Copy success");
     },
     update() {
+      this.$store.dispatch("getPrice");
       this.getBalance(this.wallets[this.selected].address);
     },
   },
@@ -137,6 +138,7 @@ export default {
 <style scoped>
 .select-fiat {
   background-color: white;
+  color: black;
   border: none;
 }
 </style>
