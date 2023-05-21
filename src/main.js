@@ -5,6 +5,7 @@ import Notifications from "@kyvg/vue3-notification";
 import VueClipboard from "vue3-clipboard";
 import { createStore } from "vuex";
 import axios from "axios";
+import VueMobileDetection from "vue-mobile-detection";
 
 const store = createStore({
   state() {
@@ -36,6 +37,7 @@ createApp(App)
   .use(store)
   .use(router)
   .use(Notifications)
+  .use(VueMobileDetection)
   .use(VueClipboard, {
     autoSetContainer: true,
     appendToBody: true,

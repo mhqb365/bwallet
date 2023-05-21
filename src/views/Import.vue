@@ -4,7 +4,12 @@
       <label>Private key</label>
       <input v-model="privateKey" type="text" class="form-control" />
     </div>
-    <button type="button" class="btn btn-primary" @click="savePrivateKey">
+    <button
+      type="button"
+      class="btn btn-primary"
+      @click="savePrivateKey"
+      :disabled="loading"
+    >
       <i class="fas fa-save"></i> Save
     </button>
   </div>
@@ -18,6 +23,7 @@ export default {
 
   data() {
     return {
+      loading: false,
       privateKey: "",
       wallets: this.$store.state.wallets,
     };
@@ -32,9 +38,11 @@ export default {
         privateKey: this.privateKey,
         address,
       });
+      this.loading = true;
       localStorage.setItem("wallets", JSON.stringify(this.wallets));
       localStorage.setItem("selected", 0);
       this.privateKey = "";
+      this.loading = false;
       this.$notify("Success");
     },
   },

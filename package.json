@@ -15,6 +15,7 @@
     "qrcode-vue3": "^1.4.17",
     "tronweb": "4.0.1",
     "vue": "^3.2.47",
+    "vue-mobile-detection": "^2.0.1",
     "vue-qrcode-reader": "^3.1.6",
     "vue-router": "^4.1.6",
     "vue3-clipboard": "^1.0.0",

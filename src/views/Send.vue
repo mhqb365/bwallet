@@ -1,6 +1,6 @@
 <template>
   <div>
-    <qr-capture @decode="onDecode" class="mb-3"></qr-capture>
+    <qr-capture v-show="$isMobile()" @decode="onDecode" class="mb-3" />
     <div class="form-group">
       <label>To</label>
       <input v-model="to" type="text" class="form-control" />
@@ -9,7 +9,12 @@
       <label>Amount</label>
       <input v-model="amount" type="number" class="form-control" />
     </div>
-    <button type="button" class="btn btn-primary" @click="send">
+    <button
+      type="button"
+      class="btn btn-primary"
+      @click="send"
+      :disabled="loading"
+    >
       <i class="fas fa-paper-plane"></i> Send
     </button>
   </div>
@@ -28,6 +33,7 @@ export default {
 
   data() {
     return {
+      loading: false,
       wallets: this.$store.state.wallets,
       selected: Number(localStorage.getItem("selected")) || 0,
       to: "",
@@ -49,12 +55,13 @@ export default {
       );
       if (this.amount >= balance)
         return this.$notify({ title: "Insufficient balance", type: "error" });
-
+      this.loading = true;
       await tronWeb.setPrivateKey(this.wallets[this.selected].privateKey);
       await tronWeb.trx.sendTransaction(
         this.to,
         tronWeb.toSun(Number(this.amount).toFixed(6))
       );
+      this.loading = false;
       this.$notify("Success");
     },
     onDecode(decodedString) {
