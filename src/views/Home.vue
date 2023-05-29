@@ -1,28 +1,31 @@
 <template>
-  <div>
-    <div class="text-center mb-4">
-      <QRCodeVue3
-        :value="wallets[selected].address"
-        :width="200"
-        :height="200"
-        :dotsOptions="{ type: 'square' }"
-        :cornersSquareOptions="{ type: 'square' }"
-      />
-    </div>
-
+  <div v-show="this.wallets.length > 0">
     <ul class="list-group text-center">
       <li class="list-group-item">
-        {{ silceAddress(wallets[selected].address) }}
+        <QRCodeVue3
+          :value="wallets.length > 0 ? wallets[selected].address : ''"
+          :width="200"
+          :height="200"
+          :dotsOptions="{ type: 'square' }"
+          :cornersSquareOptions="{ type: 'square' }"
+        />
+      </li>
+      <li class="list-group-item">
+        {{ wallets.length > 0 ? silceAddress(wallets[selected].address) : "" }}
         <button
           type="button"
-          v-clipboard:copy="wallets[selected].address"
+          v-clipboard:copy="wallets.length > 0 ? wallets[selected].address : ''"
           v-clipboard:success="copySuccess"
           class="btn btn-sm mx-1"
         >
           <i class="fas fa-copy"></i>
         </button>
         <a
-          :href="explorer + '/#/address/' + wallets[selected].address"
+          :href="
+            explorer + '/#/address/' + wallets.length > 0
+              ? wallets[selected].address
+              : ''
+          "
           target="_blank"
         >
           <button type="button" class="btn btn-sm mx-1">
@@ -72,7 +75,7 @@ export default {
   data() {
     return {
       loading: false,
-      wallets: JSON.parse(localStorage.getItem("wallets")),
+      wallets: JSON.parse(localStorage.getItem("wallets")) || [],
       selected: Number(localStorage.getItem("selected")) || 0,
       balance: 0,
       bandwidth: 0,
@@ -98,7 +101,7 @@ export default {
   },
 
   mounted() {
-    if (!this.wallets)
+    if (!this.wallets || this.wallets.length === 0)
       return this.$notify({
         title: "Not have wallet, please import first",
         type: "error",

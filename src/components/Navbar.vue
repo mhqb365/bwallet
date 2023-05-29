@@ -2,16 +2,16 @@
   <div class="fixed-bottom nav justify-content-center py-3">
     <div class="btn-group shadow">
       <button type="button" class="btn btn-primary" @click="goto('/')">
-        <i class="fas fa-wallet"></i> Wallet
+        <i class="fas fa-wallet"></i>
       </button>
       <button type="button" class="btn btn-warning" @click="goto('/send')">
-        <i class="fas fa-paper-plane"></i> Send
+        <i class="fas fa-paper-plane"></i>
       </button>
       <button type="button" class="btn btn-success" @click="goto('/select')">
-        <i class="fa fa-cog" aria-hidden="true"></i> Select
+        <i class="fa fa-cog" aria-hidden="true"></i>
       </button>
       <button type="button" class="btn btn-info" @click="goto('/import')">
-        <i class="fas fa-plus"></i> Import
+        <i class="fas fa-plus"></i>
       </button>
     </div>
   </div>
