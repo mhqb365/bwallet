@@ -1,63 +1,63 @@
 <template>
-  <div v-show="this.wallets.length > 0">
-    <ul class="list-group text-center">
-      <li class="list-group-item">
-        <QRCodeVue3
-          :value="wallets.length > 0 ? wallets[selected].address : ''"
-          :width="200"
-          :height="200"
-          :dotsOptions="{ type: 'square' }"
-          :cornersSquareOptions="{ type: 'square' }"
-        />
-      </li>
-      <li class="list-group-item">
-        {{ wallets.length > 0 ? silceAddress(wallets[selected].address) : "" }}
-        <button
-          type="button"
-          v-clipboard:copy="wallets.length > 0 ? wallets[selected].address : ''"
-          v-clipboard:success="copySuccess"
-          class="btn btn-sm mx-1"
-        >
-          <i class="fas fa-copy"></i>
-        </button>
-        <a
-          :href="
-            explorer + '/#/address/' + wallets.length > 0
-              ? wallets[selected].address
-              : ''
-          "
-          target="_blank"
-        >
-          <button type="button" class="btn btn-sm mx-1">
-            <i class="fas fa-external-link-square-alt"></i>
+  <div>
+    <div v-if="this.wallets.length === 0" class="text-center">
+      <button class="btn btn-light" @click="goto('/import')">
+        <i class="fas fa-plus"></i> import wallet
+      </button>
+    </div>
+    <div v-else>
+      <ul class="list-group text-center">
+        <li class="list-group-item">
+          <QRCodeVue3
+            :value="address"
+            :width="200"
+            :height="200"
+            :dotsOptions="{ type: 'square' }"
+            :cornersSquareOptions="{ type: 'square' }"
+          />
+        </li>
+        <li class="list-group-item">
+          {{ silceAddress(address) }}
+          <button
+            type="button"
+            v-clipboard:copy="address"
+            v-clipboard:success="copySuccess"
+            class="btn btn-sm mx-1"
+          >
+            <i class="fas fa-copy"></i>
           </button>
-        </a>
-      </li>
-      <li class="list-group-item">
-        {{ balance.toLocaleString("en-US") }} TRX
-        <button v-if="loading" type="button" class="btn btn-sm mx-1">
-          <i class="fas fa-sync fa-spin"></i>
-        </button>
-        <button v-else type="button" class="btn btn-sm mx-1" @click="update">
-          <i class="fas fa-sync"></i>
-        </button>
-      </li>
-      <li class="list-group-item small">
-        ≈{{ fiatBalance.toLocaleString("en-US") }}
-        <select
-          v-model="fiatSelected"
-          @change="changeFiatSelected"
-          class="select-fiat"
-        >
-          <option>USD</option>
-          <option>VND</option>
-        </select>
-      </li>
-      <li class="list-group-item small">
-        {{ bandwidth }}
-        <i class="fas fa-fire-alt"></i>
-      </li>
-    </ul>
+          <a :href="explorer + '/#/address/' + address" target="_blank">
+            <button type="button" class="btn btn-sm mx-1">
+              <i class="fas fa-external-link-square-alt"></i>
+            </button>
+          </a>
+        </li>
+        <li class="list-group-item">
+          {{ balance.toLocaleString("en-US") }} TRX
+          <button v-if="loading" type="button" class="btn btn-sm mx-1">
+            <i class="fas fa-sync fa-spin"></i>
+          </button>
+          <button v-else type="button" class="btn btn-sm mx-1" @click="update">
+            <i class="fas fa-sync"></i>
+          </button>
+        </li>
+        <li class="list-group-item small">
+          ≈{{ fiatBalance.toLocaleString("en-US") }}
+          <select
+            v-model="fiatSelected"
+            @change="changeFiatSelected"
+            class="select-fiat"
+          >
+            <option>USD</option>
+            <option>VND</option>
+          </select>
+        </li>
+        <li class="list-group-item small">
+          {{ bandwidth }}
+          <i class="fas fa-fire-alt"></i>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -75,8 +75,9 @@ export default {
   data() {
     return {
       loading: false,
-      wallets: JSON.parse(localStorage.getItem("wallets")) || [],
-      selected: Number(localStorage.getItem("selected")) || 0,
+      wallets: this.$store.state.wallets,
+      selected: this.$store.state.selected,
+      address: " ",
       balance: 0,
       bandwidth: 0,
       fiatSelected: localStorage.getItem("fiatSelected") || "USD",
@@ -101,12 +102,9 @@ export default {
   },
 
   mounted() {
-    if (!this.wallets || this.wallets.length === 0)
-      return this.$notify({
-        title: "Not have wallet, please import first",
-        type: "error",
-      });
-    this.getBalance(this.wallets[this.selected].address);
+    if (this.wallets.length === 0) return;
+    this.address = this.wallets[this.selected].address;
+    this.getBalance(this.address);
   },
 
   methods: {
@@ -127,8 +125,11 @@ export default {
     async update() {
       this.loading = true;
       await this.$store.dispatch("getPrice");
-      await this.getBalance(this.wallets[this.selected].address);
+      await this.getBalance(this.address);
       this.loading = false;
+    },
+    goto(path) {
+      this.$router.push({ path });
     },
   },
 };

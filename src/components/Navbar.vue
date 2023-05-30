@@ -1,6 +1,6 @@
 <template>
-  <div class="fixed-bottom nav justify-content-center py-3">
-    <div class="btn-group shadow">
+  <div class="nav justify-content-center">
+    <div class="btn-group">
       <button type="button" class="btn btn-primary" @click="goto('/')">
         <i class="fas fa-wallet"></i>
       </button>

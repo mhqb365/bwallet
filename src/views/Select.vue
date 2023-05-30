@@ -29,16 +29,12 @@ export default {
   data() {
     return {
       wallets: this.$store.state.wallets,
-      selected: Number(localStorage.getItem("selected")) || 0,
+      selected: this.$store.state.selected,
     };
   },
 
   mounted() {
-    if (!this.wallets)
-      return this.$notify({
-        title: "Not have wallet, please import first",
-        type: "error",
-      });
+    if (!this.wallets) return;
   },
 
   methods: {

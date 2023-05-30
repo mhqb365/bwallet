@@ -11,10 +11,19 @@ const store = createStore({
   state() {
     return {
       wallets: JSON.parse(localStorage.getItem("wallets")) || [],
-      price: {},
+      selected: JSON.parse(localStorage.getItem("selected")) || 0,
+      price: {
+        fiatRate: [],
+        change24h: 0,
+        usd: 0,
+      },
     };
   },
   actions: {
+    async getWallets(context) {
+      const wallets = JSON.parse(localStorage.getItem("wallets"));
+      context.commit("updateWallets", wallets);
+    },
     async getPrice(context) {
       const { data } = await axios.get(
         "https://api-dashboard.mhqb365.com/price"
@@ -24,8 +33,8 @@ const store = createStore({
     },
   },
   mutations: {
-    updateWallets(state) {
-      state.wallets = JSON.parse(localStorage.getItem("wallets"));
+    updateWallets(state, wallets) {
+      state.wallets = wallets;
     },
     updatePrice(state, price) {
       state.price = price;

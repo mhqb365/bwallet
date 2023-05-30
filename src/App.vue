@@ -2,8 +2,8 @@
   <div class="container">
     <notifications position="right" />
     <PriceBar />
-    <router-view class="py-2 pt-3" />
     <NavBar class="px-3" />
+    <router-view class="py-2 pt-3" />
   </div>
 </template>
 

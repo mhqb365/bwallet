@@ -40,7 +40,7 @@ export default {
       });
       this.loading = true;
       localStorage.setItem("wallets", JSON.stringify(this.wallets));
-      localStorage.setItem("selected", 0);
+      this.$store.dispatch("getWallets");
       this.privateKey = "";
       this.loading = false;
       this.$notify("Success");
