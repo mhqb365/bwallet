@@ -41,6 +41,7 @@ export default {
     changeSelected(e) {
       // console.log(e.target.id);
       localStorage.setItem("selected", e.target.id);
+      this.$store.dispatch("getSelected");
     },
     resetWallet() {
       localStorage.clear();
